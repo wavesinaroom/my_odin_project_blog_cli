@@ -1,0 +1,9 @@
+# VIM
+
+*.swp
+
+# Node modules
+node_modules/
+
+# dotenv
+.env
