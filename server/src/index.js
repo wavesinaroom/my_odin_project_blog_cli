@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 
@@ -12,3 +13,4 @@ main().catch(err => console.log(err));
 async function main(){
   await mongoose.connect(process.env.MONGODB_URI)
 }
+
