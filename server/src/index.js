@@ -14,3 +14,7 @@ async function main(){
   await mongoose.connect(process.env.MONGODB_URI)
 }
 
+app.get("/home", (req,res)=>{
+  res.send("Client runs fine")
+})
+
