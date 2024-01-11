@@ -7,7 +7,8 @@ const author_main_get = asyncHandler(async(req,res,next)=>{
                       'Edit Post', 
                       'Delete Post',
                       'Publish/Unpublish Post',
-                      'Delete Comment']});
+                      'Delete Comment',
+                      'Quit']});
 });
 
 const author_entry_create_get = asyncHandler(async(req,res,next)=>{
