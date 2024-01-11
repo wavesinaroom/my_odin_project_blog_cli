@@ -1,5 +1,13 @@
 import asyncHandler from "express-async-handler";
 
+const author_main_get = asyncHandler(async(req,res,next)=>{
+  res.send('NOT IMPLEMENTED: Author main menu GET');
+});
+
+const author_main_post = asyncHandler(async(req,res,next)=>{
+  res.send('NOT IMPLEMENTED: Author main menu POST');
+});
+
 const author_entry_create_get = asyncHandler(async(req,res,next)=>{
   res.send('NOT IMPLEMENTED: Author entry create GET');
 });
@@ -37,7 +45,7 @@ const author_entry_publish_post = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_comments = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLETEMENTED: Author entry comments GET');
+  res.send('NOT IMPLEMENTED: Author entry comments GET');
 });
 
 const author_entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
@@ -49,7 +57,9 @@ const author_entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
 });
 
 
-export {author_entry_create_get,
+export {author_main_get,
+        author_main_post,
+        author_entry_create_get,
         author_entry_create_post,
         author_entries,
         author_entry_edit_get,

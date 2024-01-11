@@ -3,6 +3,8 @@ import * as authorController from '../controllers/author_controller';
 
 const router = express.Router();
 
+router.get('/',authorController.author_main_get);
+router.post('/', authorController.author_main_post);
 router.get('/entry/create', authorController.author_entry_create_get);
 router.post('/entry/create', authorController.author_entry_create_post);
 router.get('/entries', authorController.author_entries);
