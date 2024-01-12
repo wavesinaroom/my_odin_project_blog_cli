@@ -1,3 +1,4 @@
+import Entry from "../models/entry.js"
 import asyncHandler from "express-async-handler";
 
 const author_main_get = asyncHandler(async(req,res,next)=>{
@@ -12,11 +13,27 @@ const author_main_get = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_create_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry create GET');
+  res.json({instructions_title: 'Please provide a title for your blogpost',
+            instructions_body: 'Add body content with your text editor, you can publish it in the Publish/Unpublish menu'});
 });
 
 const author_entry_create_post = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry  create POST');
+  const blogpost = new Entry({
+    title: req.body.title,
+    date: new Date().toDateString(),
+    text: req.body.text,
+    is_published: false,
+    comments: []
+  })
+
+  const publishedblog = await Entry.findOne({title: blogpost.title, text: blogpost.body});
+
+  if(publishedblog){
+    res.json({message: 'Title/body content already exists', options:['Main menu', 'Create new blogpost']});
+    return;
+  }
+  await blogpost.save();
+  res.json({message: 'Blogpost created'});
 });
 
 const author_entries_edit = asyncHandler(async(req,res,next)=>{

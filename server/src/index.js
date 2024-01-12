@@ -15,6 +15,7 @@ async function main(){
   await mongoose.connect(process.env.MONGODB_URI)
 }
 
+app.use(express.json());
 //Routes
 
 import authorRouter from '../routes/author.js'
