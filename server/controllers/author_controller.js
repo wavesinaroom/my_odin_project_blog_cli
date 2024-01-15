@@ -92,7 +92,8 @@ const author_entry_unpublish_put = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_comments = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry comments GET');
+  const list = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1, title: 1});
+  res.json({list:list});
 });
 
 const author_entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
