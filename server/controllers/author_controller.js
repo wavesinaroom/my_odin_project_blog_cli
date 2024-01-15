@@ -43,17 +43,17 @@ const author_entry_create_post = asyncHandler(async(req,res,next)=>{
     return;
   }
   await blogpost.save();
-  res.json({message: 'Blogpost created'});
+  res.json({message: 'Blogpost created', options:'Back to Main'});
 });
 
 const author_entries = asyncHandler(async(req,res,next)=>{
   const entries = await Entry.find({});
-  res.json({list: entries});
+  res.json({list: entries, options: 'Back to Main'});
 });
 
 const author_entry_edit_get = asyncHandler(async(req,res,next)=>{
   const entry = await Entry.findOne({title: titleCleaner(req.params.title)});
-  res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false});
+  res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false, options:'Back to Main'});
 });
 
 const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
@@ -62,49 +62,49 @@ const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
-  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.params.title)}?`, title: req.params.title});
+  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.params.title)}?`, title: req.params.title, options: 'Back to blogpost list'});
 });
 
 const author_entry_delete_post = asyncHandler(async(req,res,next)=>{
   await Entry.findOneAndDelete({title: titleCleaner(req.params.title)});
-  res.json({message: `${titleCleaner(req.params.title)} blogpost has been removed`});
+  res.json({message: `${titleCleaner(req.params.title)} blogpost has been removed`, options: 'Back to blogpost list'});
 });
 
 const author_entry_publish_get = asyncHandler(async(req,res,next)=>{
   const unpublished = await Entry.find({unpublished: false});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished} );
+  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
 });
 
 const author_entry_publish_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: true});
   const {title} = await Entry.findById({_id:req.params.id});
-  res.json({message: `${title} blogpost has been published`});
+  res.json({message: `${title} blogpost has been published`, options: 'Back to blogpost list'});
 });
 
 const author_entry_unpublish_get = asyncHandler(async(req,res,next)=>{
   const unpublished = await Entry.find({unpublished: true});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished} );
+  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
 });
 
 const author_entry_unpublish_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: false});
   const {title} = await Entry.findById({_id:req.params.id});
-  res.json({message: `${title} blogpost has been unpublished`});
+  res.json({message: `${title} blogpost has been unpublished`, options:'Back to blogpost list'});
 });
 
 const author_entry_comments = asyncHandler(async(req,res,next)=>{
   const list = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1, title: 1});
-  res.json({list:list});
+  res.json({list:list, options:'Back to Main'});
 });
 
 const author_entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
   const comment = Comment.findById(req.params._id);
-  res.json({message: `Are you sure you want to delete this comment?`, comment: comment});
+  res.json({message: `Are you sure you want to delete this comment?`, comment: comment, options:'Back to comments'});
 });
 
 const author_entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
   await Comment.findByIdAndDelete(req.params._id);
-  res.json({message: `Your comment has been removed`, options:['Back to Main', 'Back to comment list']});
+  res.json({message: `Your comment has been removed`, options:'Back to comments'});
 });
 
 
