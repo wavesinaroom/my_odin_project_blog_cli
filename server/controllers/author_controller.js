@@ -1,6 +1,15 @@
 import Entry from "../models/entry.js"
 import asyncHandler from "express-async-handler";
 
+function titleCleaner(string){
+  let cleanedTitle = string.split('');
+  for(let i = 0; i<cleanedTitle.length; i++){
+    if(cleanedTitle[i]==='-')
+      cleanedTitle[i] = ' ';
+  }
+  return cleanedTitle.join('');
+}
+
 const author_main_get = asyncHandler(async(req,res,next)=>{
   res.json({title: 'Main Menu',
             description: 'Welcome to Blog CLI, please select an option',
@@ -42,12 +51,7 @@ const author_entries = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_edit_get = asyncHandler(async(req,res,next)=>{
-  let cleanedTitle = req.params.title.split('');
-  for(let i = 0; i<cleanedTitle.length; i++){
-    if(cleanedTitle[i]==='-')
-      cleanedTitle[i] = ' ';
-  }
-  const entry = await Entry.findOne({title: cleanedTitle.join('')});
+  const entry = await Entry.findOne({title: titleCleaner(req.params.title)});
   res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false});
 });
 
@@ -57,12 +61,12 @@ const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
-  res.json({message: `Are you sure you want to delete your blogpost ${req.params.title}?`});
+  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.)}?`, title: req.params.title});
 });
 
 const author_entry_delete_post = asyncHandler(async(req,res,next)=>{
-  await Entry.findOneAndDelete({title: req.params.title});
-  res.json({message: `${req.params.title} blogpost has been removed`})
+  await Entry.findOneAndDelete({title: titleCleaner(req.params.title)});
+  res.json({message: `${titleCleaner(req.params.title)} blogpost has been removed`});
 });
 
 const author_entry_publish_get = asyncHandler(async(req,res,next)=>{
