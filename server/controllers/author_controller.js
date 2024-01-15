@@ -52,7 +52,7 @@ const author_entry_edit_get = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
-  await Entry.findByIdAndUpdate({_id: req.body.id}, {title: req.body.title, text: req.body.text});
+  await Entry.findByIdAndUpdate({_id: req.params.id}, {title: req.body.title, text: req.body.text});
   res.json({message: 'Blogpost updated', options:['Back to main menu', 'Back to blogpost list']});
 });
 

@@ -8,7 +8,7 @@ router.get('/entry/create', authorController.author_entry_create_get);
 router.post('/entry/create', authorController.author_entry_create_post);
 router.get('/entries/edit', authorController.author_entries_edit);
 router.get('/entry/:title/edit', authorController.author_entry_edit_get);
-router.put('/entry/:title/edit', authorController.author_entry_edit_put);
+router.put('/entry/:id/edit', authorController.author_entry_edit_put);
 router.get('/entries/delete', authorController.author_entries_delete);
 router.get('/entry/:title/delete', authorController.author_entry_delete_get);
 router.post('/entry/:title/delete', authorController.author_entry_delete_post);
