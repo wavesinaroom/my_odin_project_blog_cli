@@ -1,4 +1,5 @@
 import Entry from "../models/entry.js"
+import Comment from "../models/comment.js"
 import asyncHandler from "express-async-handler";
 
 function titleCleaner(string){
@@ -97,11 +98,13 @@ const author_entry_comments = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry comments GET');
+  const comment = Comment.findById(req.params._id);
+  res.json({message: `Are you sure you want to delete this comment?`, comment: comment});
 });
 
 const author_entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry comments POST');
+  await Comment.findByIdAndDelete(req.params._id);
+  res.json({message: `Your comment has been removed`, options:['Back to Main', 'Back to comment list']});
 });
 
 
