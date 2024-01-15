@@ -61,7 +61,7 @@ const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
-  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.)}?`, title: req.params.title});
+  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.params.title)}?`, title: req.params.title});
 });
 
 const author_entry_delete_post = asyncHandler(async(req,res,next)=>{
@@ -70,11 +70,25 @@ const author_entry_delete_post = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entry_publish_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry publish GET');
+  const unpublished = await Entry.find({unpublished: false});
+  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished} );
 });
 
-const author_entry_publish_post = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry publish POST');
+const author_entry_publish_put = asyncHandler(async(req,res,next)=>{
+  await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: true});
+  const {title} = await Entry.findById({_id:req.params.id});
+  res.json({message: `${title} blogpost has been published`});
+});
+
+const author_entry_unpublish_get = asyncHandler(async(req,res,next)=>{
+  const unpublished = await Entry.find({unpublished: true});
+  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished} );
+});
+
+const author_entry_unpublish_put = asyncHandler(async(req,res,next)=>{
+  await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: false});
+  const {title} = await Entry.findById({_id:req.params.id});
+  res.json({message: `${title} blogpost has been unpublished`});
 });
 
 const author_entry_comments = asyncHandler(async(req,res,next)=>{
@@ -99,7 +113,9 @@ export {author_main_get,
         author_entry_delete_get,
         author_entry_delete_post,
         author_entry_publish_get,
-        author_entry_publish_post,
+        author_entry_publish_put,
+        author_entry_unpublish_get,
+        author_entry_unpublish_put,
         author_entry_comments,
         author_entry_comment_delete_get,
         author_entry_comment_delete_post};
