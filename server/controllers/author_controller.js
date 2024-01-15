@@ -57,7 +57,8 @@ const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entries_delete = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry list for deleting')
+  const entries = await Entry.find({});
+  res.json({list: entries});
 });
 
 const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
