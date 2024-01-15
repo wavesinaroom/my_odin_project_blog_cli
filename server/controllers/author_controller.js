@@ -37,19 +37,27 @@ const author_entry_create_post = asyncHandler(async(req,res,next)=>{
 });
 
 const author_entries_edit = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry list');
+  const entries = await Entry.find({});
+  res.json({list: entries});
+});
+
+const author_entry_edit_get = asyncHandler(async(req,res,next)=>{
+  let cleanedTitle = req.params.title.split('');
+  for(let i = 0; i<cleanedTitle.length; i++){
+    if(cleanedTitle[i]==='-')
+      cleanedTitle[i] = ' ';
+  }
+  const entry = await Entry.findOne({title: cleanedTitle.join('')});
+  res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false});
+});
+
+const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
+  await Entry.findByIdAndUpdate({_id: req.body.id}, {title: req.body.title, text: req.body.text});
+  res.json({message: 'Blogpost updated', options:['Back to main menu', 'Back to blogpost list']});
 });
 
 const author_entries_delete = asyncHandler(async(req,res,next)=>{
   res.send('NOT IMPLEMENTED: Author entry list for deleting')
-});
-
-const author_entry_edit_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry edit GET');
-});
-
-const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry edit POST');
 });
 
 const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
