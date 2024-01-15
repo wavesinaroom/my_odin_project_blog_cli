@@ -36,7 +36,7 @@ const author_entry_create_post = asyncHandler(async(req,res,next)=>{
   res.json({message: 'Blogpost created'});
 });
 
-const author_entries_edit = asyncHandler(async(req,res,next)=>{
+const author_entries = asyncHandler(async(req,res,next)=>{
   const entries = await Entry.find({});
   res.json({list: entries});
 });
@@ -56,17 +56,13 @@ const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
   res.json({message: 'Blogpost updated', options:['Back to main menu', 'Back to blogpost list']});
 });
 
-const author_entries_delete = asyncHandler(async(req,res,next)=>{
-  const entries = await Entry.find({});
-  res.json({list: entries});
-});
-
 const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry delete GET');
+  res.json({message: `Are you sure you want to delete your blogpost ${req.params.title}?`});
 });
 
 const author_entry_delete_post = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Author entry delete POST')
+  await Entry.findOneAndDelete({title: req.params.title});
+  res.json({message: `${req.params.title} blogpost has been removed`})
 });
 
 const author_entry_publish_get = asyncHandler(async(req,res,next)=>{
@@ -93,8 +89,7 @@ const author_entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
 export {author_main_get,
         author_entry_create_get,
         author_entry_create_post,
-        author_entries_edit,
-        author_entries_delete,
+        author_entries,
         author_entry_edit_get,
         author_entry_edit_put,
         author_entry_delete_get,
