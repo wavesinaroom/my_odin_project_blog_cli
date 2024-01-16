@@ -35,11 +35,24 @@ const comments_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_add_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Add comment GET');
+  res.json({message: `Please add a comment to ${titleCleaner(req.params.title)}, don't forget your username before submission`});
 });
 
 const comment_add_post = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Add comment POST');
+  const comment = new Comment({
+    user: req.body.user,
+    date: new Date().toDateString(),
+    text: req.body.text 
+  });
+
+  const publishedComment = await Comment.findOne({text: comment.text})
+  if(publishedComment){
+    res.json({message: 'Comment has been already published', options:['Main Menu', 'New comment']});
+    return;
+  }
+
+  await Entry.findOneAndUpdate({title: titleCleaner(req.params.title), $push:{comments: comment}});
+  res.json({message: `Your comment has been submitted!`, options: ['Back to Main', 'Back to comments']});
 });
 
 const comment_edit_get = asyncHandler(async(req,res,next)=>{
