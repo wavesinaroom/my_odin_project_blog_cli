@@ -57,7 +57,7 @@ const comment_add_post = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_edit_get = asyncHandler(async(req,res,next)=>{
-  const comment = await Comment.findOne({_id: req.params.id});
+  const comment = await Comment.findById(req.params.id);
   res.json({message: 'Please press enter to edit your comment', comment: comment});
 });
 
