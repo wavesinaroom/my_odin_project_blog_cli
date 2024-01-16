@@ -11,7 +11,8 @@ const main_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entries_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Reader entries list GET');
+  const list = await Entry.find({});
+  res.json({list:list});
 });
 
 const entry_get = asyncHandler(async(req,res,next)=>{
