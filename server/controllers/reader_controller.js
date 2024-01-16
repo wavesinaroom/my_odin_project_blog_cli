@@ -57,7 +57,8 @@ const comment_add_post = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_edit_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Edit comment GET');
+  const comment = await Comment.findOne({_id: req.params.id});
+  res.json({message: 'Please press enter to edit your comment', comment: comment});
 });
 
 const comment_edit_post = asyncHandler(async(req,res,next)=>{
