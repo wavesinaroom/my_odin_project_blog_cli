@@ -18,6 +18,8 @@ async function main(){
 app.use(express.json());
 //Routes
 
-import authorRouter from '../routes/author.js'
+import authorRouter from '../routes/author.js';
 app.use('/author', authorRouter);
 
+import readerRouter from '../routes/reader.js';
+app.use('/reader', readerRouter);
