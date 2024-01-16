@@ -2,6 +2,15 @@ import Entry from "../models/entry.js";
 import Comment from "../models/comment.js";
 import asyncHandler from "express-async-handler";
 
+function titleCleaner(string){
+  let cleanedTitle = string.split('');
+  for(let i = 0; i<cleanedTitle.length; i++){
+    if(cleanedTitle[i]==='-')
+      cleanedTitle[i] = ' ';
+  }
+  return cleanedTitle.join('');
+}
+
 const main_get = asyncHandler(async(req,res,next)=>{
   res.json({title: 'Main Menu',
             description: 'Welcome to Blog CLI, please select an option',
@@ -16,7 +25,8 @@ const entries_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Reader entry GET');
+  const entry = await Entry.find({title: titleCleaner(req.params.title)});
+  res.json({entry: entry});
 });
 
 const comments_get = asyncHandler(async(req,res,next)=>{
