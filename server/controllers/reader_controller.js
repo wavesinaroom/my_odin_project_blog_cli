@@ -30,7 +30,8 @@ const entry_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comments_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Comments GET');
+  const comments = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1});
+  res.json({comments: comments});
 });
 
 const comment_add_get = asyncHandler(async(req,res,next)=>{
