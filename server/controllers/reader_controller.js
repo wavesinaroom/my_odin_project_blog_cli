@@ -51,6 +51,7 @@ const comment_add_post = asyncHandler(async(req,res,next)=>{
     return;
   }
 
+  await comment.save();
   await Entry.findOneAndUpdate({title: titleCleaner(req.params.title), $push:{comments: comment}});
   res.json({message: `Your comment has been submitted!`, options: ['Back to Main', 'Back to comments']});
 });
