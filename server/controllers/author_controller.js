@@ -11,7 +11,7 @@ function titleCleaner(string){
   return cleanedTitle.join('');
 }
 
-const author_main_get = asyncHandler(async(req,res,next)=>{
+const main_get = asyncHandler(async(req,res,next)=>{
   res.json({title: 'Main Menu',
             description: 'Welcome to Blog CLI, please select an option',
             options: ['Create Post', 
@@ -22,12 +22,12 @@ const author_main_get = asyncHandler(async(req,res,next)=>{
                       'Quit']});
 });
 
-const author_entry_create_get = asyncHandler(async(req,res,next)=>{
+const entry_create_get = asyncHandler(async(req,res,next)=>{
   res.json({instructions_title: 'Please provide a title for your blogpost',
             instructions_body: 'Add body content with your text editor, you can publish it in the Publish/Unpublish menu'});
 });
 
-const author_entry_create_post = asyncHandler(async(req,res,next)=>{
+const entry_create_post = asyncHandler(async(req,res,next)=>{
   const blogpost = new Entry({
     title: req.body.title,
     date: new Date().toDateString(),
@@ -46,80 +46,80 @@ const author_entry_create_post = asyncHandler(async(req,res,next)=>{
   res.json({message: 'Blogpost created', options:'Back to Main'});
 });
 
-const author_entries = asyncHandler(async(req,res,next)=>{
+const entries = asyncHandler(async(req,res,next)=>{
   const entries = await Entry.find({});
   res.json({list: entries, options: 'Back to Main'});
 });
 
-const author_entry_edit_get = asyncHandler(async(req,res,next)=>{
+const entry_edit_get = asyncHandler(async(req,res,next)=>{
   const entry = await Entry.findOne({title: titleCleaner(req.params.title)});
   res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false, options:'Back to Main'});
 });
 
-const author_entry_edit_put = asyncHandler(async(req,res,next)=>{
+const entry_edit_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {title: req.body.title, text: req.body.text});
   res.json({message: 'Blogpost updated', options:['Back to main menu', 'Back to blogpost list']});
 });
 
-const author_entry_delete_get = asyncHandler(async(req,res,next)=>{
+const entry_delete_get = asyncHandler(async(req,res,next)=>{
   res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.params.title)}?`, title: req.params.title, options: 'Back to blogpost list'});
 });
 
-const author_entry_delete_post = asyncHandler(async(req,res,next)=>{
+const entry_delete_post = asyncHandler(async(req,res,next)=>{
   await Entry.findOneAndDelete({title: titleCleaner(req.params.title)});
   res.json({message: `${titleCleaner(req.params.title)} blogpost has been removed`, options: 'Back to blogpost list'});
 });
 
-const author_entry_publish_get = asyncHandler(async(req,res,next)=>{
+const entry_publish_get = asyncHandler(async(req,res,next)=>{
   const unpublished = await Entry.find({unpublished: false});
   res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
 });
 
-const author_entry_publish_put = asyncHandler(async(req,res,next)=>{
+const entry_publish_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: true});
   const {title} = await Entry.findById({_id:req.params.id});
   res.json({message: `${title} blogpost has been published`, options: 'Back to blogpost list'});
 });
 
-const author_entry_unpublish_get = asyncHandler(async(req,res,next)=>{
+const entry_unpublish_get = asyncHandler(async(req,res,next)=>{
   const unpublished = await Entry.find({unpublished: true});
   res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
 });
 
-const author_entry_unpublish_put = asyncHandler(async(req,res,next)=>{
+const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: false});
   const {title} = await Entry.findById({_id:req.params.id});
   res.json({message: `${title} blogpost has been unpublished`, options:'Back to blogpost list'});
 });
 
-const author_entry_comments = asyncHandler(async(req,res,next)=>{
+const entry_comments = asyncHandler(async(req,res,next)=>{
   const list = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1, title: 1});
   res.json({list:list, options:'Back to Main'});
 });
 
-const author_entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
+const entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
   const comment = Comment.findById(req.params._id);
   res.json({message: `Are you sure you want to delete this comment?`, comment: comment, options:'Back to comments'});
 });
 
-const author_entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
+const entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
   await Comment.findByIdAndDelete(req.params._id);
   res.json({message: `Your comment has been removed`, options:'Back to comments'});
 });
 
 
-export {author_main_get,
-        author_entry_create_get,
-        author_entry_create_post,
-        author_entries,
-        author_entry_edit_get,
-        author_entry_edit_put,
-        author_entry_delete_get,
-        author_entry_delete_post,
-        author_entry_publish_get,
-        author_entry_publish_put,
-        author_entry_unpublish_get,
-        author_entry_unpublish_put,
-        author_entry_comments,
-        author_entry_comment_delete_get,
-        author_entry_comment_delete_post};
+export {main_get,
+        entry_create_get,
+        entry_create_post,
+        entries,
+        entry_edit_get,
+        entry_edit_put,
+        entry_delete_get,
+        entry_delete_post,
+        entry_publish_get,
+        entry_publish_put,
+        entry_unpublish_get,
+        entry_unpublish_put,
+        entry_comments,
+        entry_comment_delete_get,
+        entry_comment_delete_post};
