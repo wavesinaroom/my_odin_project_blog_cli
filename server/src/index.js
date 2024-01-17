@@ -22,7 +22,12 @@ function generateAccessToken(username){
 
 app.use(express.json());
 //Routes
-
 import authorRouter from '../routes/author.js'
 app.use('/author', authorRouter);
+
+//Login
+app.post('/login', (req, res)=>{
+  const token = generateAccessToken({username: req.body.username})
+  res.json(token);
+});
 
