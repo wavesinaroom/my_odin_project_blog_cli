@@ -67,11 +67,13 @@ const comment_edit_post = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_delete_get = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Delete comment GET');
+  const comment = await Comment.findById(req.params.id);
+  res.json({message: 'Are you sure you want to delete this comment', comment: comment});
 });
 
 const comment_delete_post = asyncHandler(async(req,res,next)=>{
-  res.send('NOT IMPLEMENTED: Delete comment POST');
+  await Comment.findByIdAndDelete(req.params.id);
+  res.json({message: 'Your comment has been deleted'});
 });
 
 export{ main_get,
