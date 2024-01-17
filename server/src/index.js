@@ -15,6 +15,11 @@ async function main(){
   await mongoose.connect(process.env.MONGODB_URI)
 }
 
+import jwt from 'jsonwebtoken'
+function generateAccessToken(username){
+  return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn}); 
+}
+
 app.use(express.json());
 //Routes
 
