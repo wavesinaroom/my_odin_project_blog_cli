@@ -24,7 +24,10 @@ app.use(express.json());
 //Routes
 
 import authorRouter from '../routes/author.js'
+import readerRouter from '../routes/reader.js'
+
 app.use('/author', authorRouter);
+app.use('/reader', readerRouter);
 
 //Login
 import session from 'express-session';
