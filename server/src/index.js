@@ -33,7 +33,7 @@ app.use('/reader', readerRouter);
 import session from 'express-session';
 import passport from 'passport';
 import User from '../models/user.js';
-const LocalStrategy = require('passport-local').LocalStrategy;
+const LocalStrategy = require('passport-local').Strategy;
 
 app.use(session({secret: "cats", resave: false, saveUninitialized: true}));
 app.use(passport.initialize());
