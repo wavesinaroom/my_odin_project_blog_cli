@@ -1,0 +1,11 @@
+
+Please enter a valid option
+
+Usage: blogcli [options]
+
+  Available options:
+
+    -a Author
+    -r Reader
+
+Made by wavesinaroom

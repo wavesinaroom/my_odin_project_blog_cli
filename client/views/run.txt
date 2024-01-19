@@ -1,0 +1,15 @@
+
+DESCRIPTION:
+  
+  BlogCLI reads and creates blogposts with an interactive user interface.
+
+  It features an author profile and a reader profile for blog creation/reading.
+
+USAGE: blogcli [options]
+
+  OPTIONS:
+
+    -a Author mode
+    -r Reader mode
+
+Made by wavesinaroom
