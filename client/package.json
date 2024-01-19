@@ -17,5 +17,6 @@
     "@babel/core": "^7.23.7",
     "@babel/node": "^7.22.19",
     "@babel/preset-env": "^7.23.8"
-  }
+  },
+  "type": "module"
 }
