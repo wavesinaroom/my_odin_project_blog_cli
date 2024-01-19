@@ -18,10 +18,32 @@ async function main(){
       console.log(`reader`);
       break;
     case undefined:
-      console.log(`Please provide an option`);
+      console.log('DESCRIPTION:','\n');
+      console.group();
+      console.log('BlogCLI reads and create blogposts with an interactive user interface.', '\n');
+      console.log('It features an author profile and a reader profile for blog creation/reading :', '\n' );
+      console.groupEnd();
+      console.log('USAGE: blogcli [options]', '\n');
+      console.group();
+      console.log('OPTIONS:', '\n');
+      console.group();
+      console.log('-a Author mode');
+      console.log('-r Reader mode', '\n');
+      console.groupEnd();
+      console.groupEnd();
+      console.log('Made by wavesinaroom','\n')
       break;
     default:
-      console.log(`Please enter a valid option`);
+      console.log(`Please enter a valid option`, '\n');
+      console.log('Usage: blogcli [options]', '\n');
+      console.group();
+      console.log('Available options:', '\n');
+      console.group();
+      console.log('-a Author mode');
+      console.log('-r Reader mode', '\n');
+      console.groupEnd();
+      console.groupEnd();
+      console.log('Made by wavesinaroom', '\n');
   }
 }
 
