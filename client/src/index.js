@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 import { readFile } from 'node:fs';
 import { argv } from'node:process';
+import author from './author.js';
 
 function main(){
   switch(argv[2]){
     case `-a`:
-      console.log('Author');
+      author(); 
       break;
     case `-r`:
       console.log('reader');
