@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { input, editor, checkbox, select } from "@inquirer/prompts"; 
+import { input, editor, checkbox, select, confirm } from "@inquirer/prompts"; 
 const create = async(instructions)=>{
   const answers = {
     title: await input({message: instructions.title}),
@@ -74,8 +74,17 @@ const edit = async(entry)=>{
           
 };
 
-const remove = (entry)=>{
-  console.log(`Remove: ${entry}`);
+const remove = async(entry)=>{
+  const answer = await confirm({message:'Are you sure you want to delete this entry?'}) 
+
+  if(answer){
+    const endpoint = `http://localhost:3000/author/entry/${entry.title}/delete`
+    fetch(endpoint, {method: 'POST'});
+    return;
+  }
+  
+  list();
+
 };
 
 
