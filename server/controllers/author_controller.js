@@ -23,8 +23,8 @@ const main_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_create_get = asyncHandler(async(req,res,next)=>{
-  res.json({instructions_title: 'Please provide a title for your blogpost',
-            instructions_body: 'Add body content with your text editor, you can publish it in the Publish/Unpublish menu'});
+  res.json({title: 'Please provide a title for your blogpost',
+            body: 'Add body content with your text editor, you can publish it in the Publish/Unpublish menu'});
 });
 
 const entry_create_post = asyncHandler(async(req,res,next)=>{
