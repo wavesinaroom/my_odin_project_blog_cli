@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { readFile } from 'node:fs';
 import { argv } from'node:process';
-import author from './author.js';
+import author from './author/author.js';
 
 function main(){
   switch(argv[2]){
