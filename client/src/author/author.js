@@ -1,4 +1,5 @@
+import * as Publisher from '../author/published.js' 
 export default function (){
-  console.log('Logged as author');
+  Publisher.list_to_publish();
 }
 

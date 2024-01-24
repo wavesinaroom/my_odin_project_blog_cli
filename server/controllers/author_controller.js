@@ -61,10 +61,20 @@ const entry_delete_post = asyncHandler(async(req,res,next)=>{
   res.json({message: `${titleCleaner(req.params.title)} blogpost has been removed`, options: 'Back to blogpost list'});
 });
 
+const entry_publish_get = asyncHandler(async(req,res,next)=>{
+  const unpublished = await Entry.find({is_published: false});
+  res.json({message: `Please choose a blogpost to publish`, list: unpublished, options: 'Back to blogpost list'});
+});
+
 const entry_publish_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: true});
   const {title} = await Entry.findById({_id:req.params.id});
   res.json({message: `${title} blogpost has been published`, options: 'Back to blogpost list'});
+});
+
+const entry_unpublish_get = asyncHandler(async(req,res,next)=>{
+  const unpublished = await Entry.find({is_published: true});
+  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
 });
 
 const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
@@ -95,7 +105,9 @@ export {main_get,
         entries,
         entry_edit_put,
         entry_delete_post,
+        entry_publish_get,
         entry_publish_put,
+        entry_unpublish_get,
         entry_unpublish_put,
         entry_comments,
         entry_comment_delete_get,

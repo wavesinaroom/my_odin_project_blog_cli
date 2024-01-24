@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { input, editor, checkbox, select, confirm } from "@inquirer/prompts"; 
-const create = async(instructions)=>{
+const create = async()=>{
   const answers = {
-    title: await input({message: instructions.title}),
+    title: await input({message: 'Please enter your title'}),
     body: await editor({message: 'Please write your blogpost body'})
   }
   fetch('http://localhost:3000/author/entry/create',
