@@ -51,18 +51,9 @@ const entries = asyncHandler(async(req,res,next)=>{
   res.json({list: entries, options: 'Back to Main'});
 });
 
-const entry_edit_get = asyncHandler(async(req,res,next)=>{
-  const entry = await Entry.findOne({title: titleCleaner(req.params.title)});
-  res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false, options:'Back to Main'});
-});
-
 const entry_edit_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {title: req.body.title, text: req.body.text});
   res.json({message: 'Blogpost updated', options:['Back to main menu', 'Back to blogpost list']});
-});
-
-const entry_delete_get = asyncHandler(async(req,res,next)=>{
-  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.params.title)}?`, title: req.params.title, options: 'Back to blogpost list'});
 });
 
 const entry_delete_post = asyncHandler(async(req,res,next)=>{
@@ -70,20 +61,10 @@ const entry_delete_post = asyncHandler(async(req,res,next)=>{
   res.json({message: `${titleCleaner(req.params.title)} blogpost has been removed`, options: 'Back to blogpost list'});
 });
 
-const entry_publish_get = asyncHandler(async(req,res,next)=>{
-  const unpublished = await Entry.find({unpublished: false});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
-});
-
 const entry_publish_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {is_published: true});
   const {title} = await Entry.findById({_id:req.params.id});
   res.json({message: `${title} blogpost has been published`, options: 'Back to blogpost list'});
-});
-
-const entry_unpublish_get = asyncHandler(async(req,res,next)=>{
-  const unpublished = await Entry.find({unpublished: true});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
 });
 
 const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
@@ -112,13 +93,9 @@ export {main_get,
         entry_create_get,
         entry_create_post,
         entries,
-        entry_edit_get,
         entry_edit_put,
-        entry_delete_get,
         entry_delete_post,
-        entry_publish_get,
         entry_publish_put,
-        entry_unpublish_get,
         entry_unpublish_put,
         entry_comments,
         entry_comment_delete_get,
