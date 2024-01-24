@@ -74,7 +74,7 @@ const entry_publish_put = asyncHandler(async(req,res,next)=>{
 
 const entry_unpublish_get = asyncHandler(async(req,res,next)=>{
   const unpublished = await Entry.find({is_published: true});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
+  res.json({message: `Please choose a blogpost to publish`, list: unpublished, options: 'Back to blogpost list'});
 });
 
 const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
