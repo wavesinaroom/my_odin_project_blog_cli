@@ -34,6 +34,12 @@ const list = async()=>{
         edit(entries.list.find((e)=> e.title === answers.entry));
       else
         remove(entries.list.find((e)=> e.title === answers.entry));
+    })
+    .catch((err)=>{
+      if(err)
+        console.log(err);
+      else
+        Console.log('Process aborted');
     });
 };
 
