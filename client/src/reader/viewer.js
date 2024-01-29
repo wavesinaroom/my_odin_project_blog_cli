@@ -1,3 +1,4 @@
+import dateformat from 'dateformat';
 import { select } from '@inquirer/prompts';
 
 export default async ()=>{
@@ -12,7 +13,7 @@ export default async ()=>{
       });
       const answer = await select({message: 'Please choose an article to read', choices: options});
       const article = entries.list.find((e)=>e.title === answer);
-      console.log('\n',article.title, '\t', article.date);
+      console.log('\n',article.title, '\t', dateformat(article.date, "ddd mmm dd yyyy"));
       console.log('\n', article.text);
 
       if(article.comments.length!==0){
