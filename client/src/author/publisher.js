@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import { select, confirm } from '@inquirer/prompts'
 
 const list_to_publish = async()=>{
@@ -14,6 +13,10 @@ const list_to_publish = async()=>{
       const answer = await select({message: 'Please choose an entry to publish',
                                    choices: options});
       publish(answer)
+    })
+    .catch((err)=>{
+      if(err)
+        console.error('Couldn\'t list your entries');
     });
 }
 
@@ -30,6 +33,10 @@ const list_to_unpublish = async()=>{
       const answer = await select({message: 'Please choose an entry to unpublish',
                                    choices: options});
       unpublish(answer)
+    })
+    .catch((err)=>{
+      if(err)
+        console.error('Couldn\'t unpublish your entry');
     });
 }
 
@@ -40,7 +47,11 @@ const publish = async(entry)=>{
 
 const unpublish = async(entry)=>{
   const endpoint = `http://localhost:3000/author/entry/${entry}/unpublish`;
-    fetch(endpoint, {method:'PUT'});
+  fetch(endpoint, {method:'PUT'})
+    .catch((err)=>{
+      if(err)
+        console.error('Couldn\'t unpublish your entry');
+    });
 }
 
 export { list_to_publish, list_to_unpublish}
