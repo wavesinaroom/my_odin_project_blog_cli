@@ -18,5 +18,8 @@
     "@babel/node": "^7.22.19",
     "@babel/preset-env": "^7.23.8"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@inquirer/prompts": "^3.3.0"
+  }
 }

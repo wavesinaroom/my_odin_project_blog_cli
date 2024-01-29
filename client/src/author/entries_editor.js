@@ -37,9 +37,7 @@ const list = async()=>{
     })
     .catch((err)=>{
       if(err)
-        console.log(err);
-      else
-        Console.log('Process aborted');
+        console.error('Couldn\'t list your entries');
     });
 };
 
@@ -76,7 +74,11 @@ const edit = async(entry)=>{
               'Content-Type': 'application/json',
             },   
             body: JSON.stringify({title: edit.title, text: edit.text})}
-        );
+      )
+      .catch((err)=>{
+        if(err)  
+          console.error('Couldn\'t update your entry');
+      });
           
 };
 
@@ -85,7 +87,11 @@ const remove = async(entry)=>{
 
   if(answer){
     const endpoint = `http://localhost:3000/author/entry/${entry.title}/delete`
-    fetch(endpoint, {method: 'POST'});
+    fetch(endpoint, {method: 'POST'})
+    .catch((err)=>{
+      if(err)
+        console.error('Couldn\'t remove your post');
+    });
     return;
   }
   
