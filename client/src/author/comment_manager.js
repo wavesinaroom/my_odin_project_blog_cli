@@ -12,6 +12,9 @@ const entries_list = async()=>{
       });
       const answer = await select({message: 'Select article', choices: options})
       comments_list(answer);
+    })
+    .catch((err)=>{
+      console.error('Couldn\'t list your entries');
     });
 };
 
@@ -30,12 +33,20 @@ const comments_list = async(entry)=>{
                       confirmation: await confirm({message: 'Are you sure you want to delete this comment?'})}
       if(remove.confirmation)
         remove(answer.comment);
+    })
+    .catch((err)=>{
+      if(err)
+        console.error('Couldn\'t list your entry comments');
     });
 }
 
 const remove = async(comment)=>{
   const endpoint = `http://localhost:3000/author/${comment.title}/comment/${comment.id}`;
-  fetch(endpoint, {method: 'PUT'});
+  fetch(endpoint, {method: 'PUT'})
+    .catch((err)=>{
+      if(err)
+        console.error('Couldn\'t remove your entry comment');
+    });
 };
 
 export { entries_list }
