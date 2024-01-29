@@ -1,5 +1,28 @@
-import chalk from "chalk";
+import chalk from 'chalk';
 import { input, editor, checkbox, select, confirm } from "@inquirer/prompts"; 
+
+const select_editor_method = async()=>{
+  const answer = await select({message:'Please select your action', 
+    choices: [
+      {
+        name: 'Create',
+        value: 'create',
+        description: 'Creates a blog entry'
+      },
+      {
+        name: 'Edit/Remove',
+        value: 'edit_remove',
+        description: 'Edit or remove an entry'
+      }
+    ]
+  });
+
+  if(answer.value === 'create')
+    create();
+  else
+    list();
+}
+
 const create = async()=>{
   const answers = {
     title: await input({message: 'Please enter your title'}),
@@ -23,7 +46,6 @@ const list = async()=>{
       entries.list.forEach((e)=>{
         options.push({name: e.title, value: e.title});
       })
-      console.log(chalk.blue('|---Blogpost Edit/Remove---|'));
       const answers = {
         entry: await select({message: 'Please choose your entry', choices: options}),
         action: await select({message: 'Do you what to edit or remove your entry?'
@@ -99,5 +121,4 @@ const remove = async(entry)=>{
 
 };
 
-
-export { create, list }
+export default select_editor_method; 

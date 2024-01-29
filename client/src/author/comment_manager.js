@@ -14,7 +14,8 @@ const entries_list = async()=>{
       comments_list(answer);
     })
     .catch((err)=>{
-      console.error('Couldn\'t list your entries');
+      if(err)
+        console.error('Couldn\'t list your entries');
     });
 };
 
@@ -49,4 +50,4 @@ const remove = async(comment)=>{
     });
 };
 
-export { entries_list }
+export default entries_list; 

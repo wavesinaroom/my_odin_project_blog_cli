@@ -1,4 +1,26 @@
-import { select, confirm } from '@inquirer/prompts'
+import { select } from '@inquirer/prompts'
+
+const select_publisher_method = async ()=>{
+  const answer = await select({message: 'Please select your publising method',
+    choices: [
+      {
+        name: 'Publish',
+        value: 'publish',
+        description: 'Publishes a blog entry'
+      },
+      {
+        name: 'Unpublish',
+        value: 'unpublish',
+        description: 'Unpublishes a blog entry'
+      }
+    ]
+  });
+
+  if(answer.value === 'publish')
+    list_to_publish();
+  else
+    list_to_unpublish();
+}
 
 const list_to_publish = async()=>{
   fetch('http://localhost:3000/author/entry/publish')
@@ -54,4 +76,4 @@ const unpublish = async(entry)=>{
     });
 }
 
-export { list_to_publish, list_to_unpublish}
+export default select_publisher_method
