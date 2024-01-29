@@ -2,6 +2,7 @@
 import { readFile } from 'node:fs';
 import { argv } from'node:process';
 import author from './author/author.js';
+import reader from './reader/reader.js';
 
 function main(){
   switch(argv[2]){
@@ -9,7 +10,7 @@ function main(){
       author(); 
       break;
     case `-r`:
-      console.log('reader');
+      reader();
       break;
     case undefined:
       readFile('./views/run.txt', {encoding: 'utf8'}, (err,data)=>{
