@@ -1,5 +1,6 @@
-import viewer from "./viewer.js";
+import viewer from './viewer.js';
+import comment_manager from './comment_manager.js';
 
 export default async ()=>{
-  viewer();
+  comment_manager();
 };
