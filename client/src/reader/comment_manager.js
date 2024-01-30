@@ -8,10 +8,10 @@ export default async()=>{
     .then(async(entries)=>{
       const options = [];
       entries.list.forEach((e)=>{
-        options.push({name: e.title, value: e.title});
+        options.push({name: e.title, value: e});
       });
       const answer = await select({message: 'Select article', choices: options})
-      comments_list(answer);
+      select_method(answer);
     })
     .catch((err)=>{
       if(err)
@@ -58,10 +58,8 @@ const add = async(entry)=>{
                   };  
   const endpoint = `http://localhost:3000/reader/${entry.title}/comment/add`;
   fetch(endpoint,{method: 'POST',
-    body:{
-      user: answers.user,
-      text: answers.text
-    }
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(answers)
   });
 };
 
