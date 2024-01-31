@@ -6,6 +6,10 @@ export default async()=>{
       return data.json();
     })
     .then(async(entries)=>{
+      if(entries.list.length===0){
+        console.log('You don\'t have any entries');
+        return;
+      }
       const options = [];
       entries.list.forEach((e)=>{
         options.push({name: e.title, value: e});
@@ -70,6 +74,10 @@ const edit = async(entry)=>{
       return res.json();
     })
     .then(async(list)=>{
+      if(list.comments.length===0){
+        console.error('You don\'t have any comments');
+        return;
+      }
       const comments = [];
       list.comments.forEach((c)=>{
         comments.push({name:c.text, value:c});
@@ -97,6 +105,10 @@ const remove = async(entry)=>{
       return res.json();
     })
     .then(async(list)=>{
+      if(list.comments.length ===0){
+        console.error('You don\'t have any comments');
+        return;
+      }
       const comments = [];
       list.comments.forEach((c)=>{
         comments.push({name:c.text, value:c});
