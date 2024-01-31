@@ -25,14 +25,14 @@ const comments_list = async(entry)=>{
     .then((data)=>{
       return data.json();
     })
-    .then(async(comments)=>{
+    .then(async(result)=>{
       const options = [];
-      comments.list.forEach((e)=>{
-        options.push({name: e.text, value: {title: entry, id:e._id}})
+      result.comments.forEach((c)=>{
+        options.push({name: c.text, value: {title: entry, id:c._id}})
       });
       const answer = {comment: await select({message: 'Please select a comment to delete', choices:options}), 
                       confirmation: await confirm({message: 'Are you sure you want to delete this comment?'})}
-      if(remove.confirmation)
+      if(answer.confirmation)
         remove(answer.comment);
     })
     .catch((err)=>{
@@ -42,8 +42,8 @@ const comments_list = async(entry)=>{
 }
 
 const remove = async(comment)=>{
-  const endpoint = `http://localhost:3000/author/${comment.title}/comment/${comment.id}`;
-  fetch(endpoint, {method: 'PUT'})
+  const endpoint = `http://localhost:3000/author/entry/${comment.title}/comment/${comment.id}/delete`;
+  fetch(endpoint, {method: 'POST'})
     .catch((err)=>{
       if(err)
         console.error('Couldn\'t remove your entry comment');

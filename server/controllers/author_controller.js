@@ -84,8 +84,8 @@ const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_comments = asyncHandler(async(req,res,next)=>{
-  const list = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1, title: 1});
-  res.json({list:list, options:'Back to Main'});
+  const list = await Entry.findOne({title: titleCleaner(req.params.title)}, {comments: 1}).populate('comments');
+  res.json(list);
 });
 
 const entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
@@ -94,7 +94,8 @@ const entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
-  await Comment.findByIdAndDelete(req.params._id);
+  await Entry.findOneAndUpdate({title: titleCleaner(req.params.title), $pull:{comments: req.params.id}})
+  await Comment.findByIdAndDelete(req.params.id);
   res.json({message: `Your comment has been removed`, options:'Back to comments'});
 });
 

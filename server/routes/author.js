@@ -14,8 +14,8 @@ router.put('/entry/:id/publish', authorController.entry_publish_put);
 router.get('/entry/unpublish', authorController.entry_unpublish_get);
 router.put('/entry/:id/unpublish', authorController.entry_unpublish_put);
 router.get('/entry/:title/comments', authorController.entry_comments);
-router.get('/entry/:title/comment/:id', authorController.entry_comment_delete_get);
-router.post('/entry/:title/comment/:id', authorController.entry_comment_delete_post);
+router.get('/entry/:title/comment/:id/delete', authorController.entry_comment_delete_get);
+router.post('/entry/:title/comment/:id/delete', authorController.entry_comment_delete_post);
 
 export default router;
 
