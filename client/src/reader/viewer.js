@@ -7,6 +7,10 @@ export default async ()=>{
       return data.json();
     })
     .then(async(entries)=>{
+      if(entries.list.length === 0){
+        console.error('You don\'t have any entries to read');
+        return;
+      }
       const options = [];
       entries.list.forEach((e)=>{
         options.push({name: e.title, value: e.title});

@@ -20,7 +20,7 @@ const main_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entries_get = asyncHandler(async(req,res,next)=>{
-  const list = await Entry.find({});
+  const list = await Entry.find({is_published:true});
   res.json({list:list});
 });
 
