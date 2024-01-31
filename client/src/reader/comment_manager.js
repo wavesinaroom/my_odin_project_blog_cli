@@ -44,10 +44,10 @@ const select_method = async(entry)=>{
       add(entry);
       break;
     case 'edit':
-      edit(list_comments(entry));
+      edit(entry);
       break;
     case 'remove':
-      remove(list_comments(entry));
+      remove(entry);
       break;
   }
 }
@@ -63,34 +63,33 @@ const add = async(entry)=>{
   });
 };
 
-const list_comments = async(entry)=>{
-  const endpoint = `http://localhost:3000/reader/${entry.title}/comments`;
-  const comments = fetch(endpoint);
-  const options = [];
+const edit = async(entry)=>{
+  const listUrl = `http://localhost:3000/reader/${entry.title}/comments`
+  fetch(listUrl)
+    .then((res)=>{
+      return res.json();
+    })
+    .then(async(list)=>{
+      const comments = [];
+      list.comments.forEach((c)=>{
+        comments.push({name:c.text, value:c});
+      });
+      const comment = await select({message: 'Choose a comment', choices: comments});
+      comment.text = await editor({message: 'Please enter your text', default: comment.text});
 
-  comments.forEach((c)=>{
-    options.push({name: c.text, value: c});
-  });
-  
-  const answer = await select({message: 'Please choose a comment', choices: options});
-  return {article: entry.title, comment: answer};
-};
+      const endpoint = `http://localhost:3000/reader/${entry.title}/comment/${comment._id}/edit`;
 
-const edit = async(comment)=>{
-  const endpoint = `http://localhost:3000/reader/${comment.article}/comment/${comment.id}`;
-  const answer = await editor({message:'Please edit your comment', default: comment.text});
-  comment.text = answer;
-  fetch(endpoint, {method: 'POST',
-    body: {
-      edit: answer
-    }
-  });
+      fetch(endpoint,{method: 'POST',
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(comment)
+      });
+    })
+    .catch((err)=>{
+      if(err)
+        console.log('Couldn\'t fetch list of comments');
+    });
 };
 
 const remove = async(comment)=>{
-  const endpoint = `http://localhost:3000/reader/${comment.article}/comment/${comment.id}`;
-  const answer = await confirm({message: 'Do you really want to delete this comment'})  
-  if(answer)
-    fetch(endpoint);
 };
 

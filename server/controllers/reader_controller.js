@@ -62,7 +62,7 @@ const comment_edit_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_edit_post = asyncHandler(async(req,res,next)=>{
-  await Comment.findByIdAndUpdate(req.params.id, req.body.edit);
+  await Comment.findByIdAndUpdate(req.params.id, req.body);
   res.json({message: 'Your comment has been edited'});
 });
 
