@@ -30,8 +30,8 @@ const entry_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comments_get = asyncHandler(async(req,res,next)=>{
-  const comments = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1});
-  res.json({comments: comments});
+  const comments = await Entry.findOne({title: titleCleaner(req.params.title)}, {comments: 1}).populate('comments');
+  res.json(comments);
 });
 
 const comment_add_get = asyncHandler(async(req,res,next)=>{
