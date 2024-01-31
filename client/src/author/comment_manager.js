@@ -6,6 +6,10 @@ const entries_list = async()=>{
       return data.json();
     })
     .then(async(entries)=>{
+      if(entries.length===0){
+        console.error('You don\'t have any entries');
+        return;
+      } 
       const options = [];
       entries.list.forEach((e)=>{
         options.push({name: e.title, value: e.title});
@@ -26,6 +30,10 @@ const comments_list = async(entry)=>{
       return data.json();
     })
     .then(async(result)=>{
+      if(result.comments.length === 0){
+        console.error('You don\'t have any comments');
+      }
+
       const options = [];
       result.comments.forEach((c)=>{
         options.push({name: c.text, value: {title: entry, id:c._id}})
