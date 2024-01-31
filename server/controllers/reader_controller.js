@@ -72,6 +72,7 @@ const comment_delete_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_delete_post = asyncHandler(async(req,res,next)=>{
+  await Entry.findOneAndUpdate({title:titleCleaner(req.params.title), $pull:{comments: req.params.id}});
   await Comment.findByIdAndDelete(req.params.id);
   res.json({message: 'Your comment has been deleted'});
 });

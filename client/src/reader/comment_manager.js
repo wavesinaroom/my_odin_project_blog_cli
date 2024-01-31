@@ -90,6 +90,26 @@ const edit = async(entry)=>{
     });
 };
 
-const remove = async(comment)=>{
+const remove = async(entry)=>{
+  const listUrl = `http://localhost:3000/reader/${entry.title}/comments`
+  fetch(listUrl)
+    .then((res)=>{
+      return res.json();
+    })
+    .then(async(list)=>{
+      const comments = [];
+      list.comments.forEach((c)=>{
+        comments.push({name:c.text, value:c});
+      });
+      const comment = await select({message: 'Choose a comment', choices: comments});
+      const remove = await confirm({message: 'Do you really want to delete this comment?'});
+
+      if(!remove)
+        return;
+
+      const endpoint = `http://localhost:3000/reader/${entry.title}/comment/${comment._id}/delete`
+      fetch(endpoint,{method:'POST'});
+
+    })
 };
 
