@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
+import asyncHandler from 'express-async-handler';
 
 //Set up
 const app = express();
@@ -14,12 +15,6 @@ main().catch(err => console.log(err));
 async function main(){
   await mongoose.connect(process.env.MONGODB_URI)
 }
-
-import jwt from 'jsonwebtoken'
-function generateAccessToken(username){
-  return jwt.sign(username, process.env.TOKEN_SECRET, {expiresIn: '1800s'}); 
-}
-
 app.use(express.json());
 //Routes
 
@@ -30,42 +25,28 @@ app.use('/author', authorRouter);
 app.use('/reader', readerRouter);
 
 //Login
-import session from 'express-session';
-import passport from 'passport';
-import User from '../models/user.js';
-import { Strategy } from 'passport-local'
+import crypto from 'crypto';
+import User from '../models/user.js'
+const hash = crypto.createHash('sha256');
 
-app.use(session({secret: "cats", resave: false, saveUninitialized: true}));
-app.use(passport.initialize());
-app.use(passport.session());
 
-passport.use(
-  new Strategy(async(password, done)=>{
-    try{
-      const user = await User.find({username: "author"});
-      if(user.password !== password)
-        return done(null, false, {message: "Incorrect password"});
-      return done(null, user);
-    }catch(err){
-      return done(err);
-    };
-  })
-)
-
-passport.serializeUser((user, done)=>{
-  done(null, user.id);
-});
-
-passport.deserializeUser(async(id, done)=>{
-  passport.authenticate("local", {
-    failureMessage: "Wrong password"
-  }), (req,res)=>{
-    res.redirect('/author');
-  }
-})
-
-app.post('/login', (req, res)=>{
-  const token = generateAccessToken({username: req.body.username})
-  res.json(token);
-});
-
+app.post('/login',asyncHandler(async (req,res,next)=>{
+  hash.on('readable', ()=>{
+    const data = hash.read();
+    if(data){
+      User.findOne({username:'author', password: data.toString('hex')})
+        .then((user)=>{
+          if(user)
+            res.redirect('/author');
+          else
+            res.send('Invalid password')
+        })
+        .catch((err)=>{
+          if(err)
+            res.send('Could not log you in, please try again');
+        })
+    }
+  });
+  hash.write('password1234');
+  hash.end();
+}))
