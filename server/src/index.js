@@ -31,22 +31,16 @@ const hash = crypto.createHash('sha256');
 
 
 app.post('/login',asyncHandler(async (req,res,next)=>{
-  hash.on('readable', ()=>{
+  hash.on('readable', async()=>{
     const data = hash.read();
     if(data){
-      User.findOne({username:'author', password: data.toString('hex')})
-        .then((user)=>{
-          if(user)
-            res.redirect('/author');
-          else
-            res.send('Invalid password')
-        })
-        .catch((err)=>{
-          if(err)
-            res.send('Could not log you in, please try again');
-        })
+      const user = await User.findOne({username:'author', password: data.toString('hex')})
+      if(user)
+        res.sendStatus(200)
+      else
+        res.sendStatus(401);
     }
   });
-  hash.write('password1234');
+  hash.write(req.body.password);
   hash.end();
 }))
