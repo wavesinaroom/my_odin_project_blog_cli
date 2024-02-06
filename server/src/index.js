@@ -46,6 +46,14 @@ app.post('/login',asyncHandler(async (req,res,next)=>{
 }))
 
 //App shutdown
+app.post('/quit-by-user', asyncHandler(async(req,res,next)=>{
+  process.emit('SIGINT');
+}));
+
+app.post('/quit/shutdown', asyncHandler(async(req,res,next)=>{
+  process.emit('SIGTERM');
+}));
+
 process.on('SIGTERM', ()=>{
   console.log('Server shutting down');
   mongoose.connection.close();
@@ -53,7 +61,7 @@ process.on('SIGTERM', ()=>{
 });
 
 process.on('SIGINT', ()=>{
-  console.log('Server shutting down');
+  console.log('Exit by user');
   mongoose.connection.close();
   process.exit(0);
 });

@@ -49,4 +49,11 @@ const login = async()=>{
     });
 }
 
+process.on('SIGINT', ()=>{
+  fetch('http://localhost:3000/quit-by-user');
+});
+
+process.on('SIGTERM', ()=>{
+  fetch(('http://localhost:3000/quit/shutdown'));
+});
 main();
