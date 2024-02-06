@@ -44,3 +44,16 @@ app.post('/login',asyncHandler(async (req,res,next)=>{
   hash.write(req.body.password);
   hash.end();
 }))
+
+//App shutdown
+process.on('SIGTERM', ()=>{
+  console.log('Server shutting down');
+  mongoose.connection.close();
+  process.exit(0);
+});
+
+process.on('SIGINT', ()=>{
+  console.log('Server shutting down');
+  mongoose.connection.close();
+  process.exit(0);
+});
