@@ -17,7 +17,7 @@ const select_editor_method = async()=>{
     ]
   });
 
-  if(answer.value === 'create')
+  if(answer === 'create')
     create();
   else
     list();
