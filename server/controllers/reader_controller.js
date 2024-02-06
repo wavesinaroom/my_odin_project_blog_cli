@@ -20,7 +20,7 @@ const main_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entries_get = asyncHandler(async(req,res,next)=>{
-  const list = await Entry.find({});
+  const list = await Entry.find({is_published:true});
   res.json({list:list});
 });
 
@@ -30,8 +30,8 @@ const entry_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comments_get = asyncHandler(async(req,res,next)=>{
-  const comments = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1});
-  res.json({comments: comments});
+  const comments = await Entry.findOne({title: titleCleaner(req.params.title)}, {comments: 1}).populate('comments');
+  res.json(comments);
 });
 
 const comment_add_get = asyncHandler(async(req,res,next)=>{
@@ -62,7 +62,7 @@ const comment_edit_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_edit_post = asyncHandler(async(req,res,next)=>{
-  await Comment.findByIdAndUpdate(req.params.id, req.body.edit);
+  await Comment.findByIdAndUpdate(req.params.id, req.body);
   res.json({message: 'Your comment has been edited'});
 });
 
@@ -72,6 +72,7 @@ const comment_delete_get = asyncHandler(async(req,res,next)=>{
 });
 
 const comment_delete_post = asyncHandler(async(req,res,next)=>{
+  await Entry.findOneAndUpdate({title:titleCleaner(req.params.title), $pull:{comments: req.params.id}});
   await Comment.findByIdAndDelete(req.params.id);
   res.json({message: 'Your comment has been deleted'});
 });

@@ -51,18 +51,9 @@ const entries = asyncHandler(async(req,res,next)=>{
   res.json({list: entries, options: 'Back to Main'});
 });
 
-const entry_edit_get = asyncHandler(async(req,res,next)=>{
-  const entry = await Entry.findOne({title: titleCleaner(req.params.title)});
-  res.json({title: entry.title, text: entry.text, date: entry.date, edit_title: false, edit_text: false, options:'Back to Main'});
-});
-
 const entry_edit_put = asyncHandler(async(req,res,next)=>{
   await Entry.findByIdAndUpdate({_id: req.params.id}, {title: req.body.title, text: req.body.text});
   res.json({message: 'Blogpost updated', options:['Back to main menu', 'Back to blogpost list']});
-});
-
-const entry_delete_get = asyncHandler(async(req,res,next)=>{
-  res.json({message: `Are you sure you want to delete your blogpost ${titleCleaner(req.params.title)}?`, title: req.params.title, options: 'Back to blogpost list'});
 });
 
 const entry_delete_post = asyncHandler(async(req,res,next)=>{
@@ -71,8 +62,8 @@ const entry_delete_post = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_publish_get = asyncHandler(async(req,res,next)=>{
-  const unpublished = await Entry.find({unpublished: false});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
+  const unpublished = await Entry.find({is_published: false});
+  res.json({message: `Please choose a blogpost to publish`, list: unpublished, options: 'Back to blogpost list'});
 });
 
 const entry_publish_put = asyncHandler(async(req,res,next)=>{
@@ -82,8 +73,8 @@ const entry_publish_put = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_unpublish_get = asyncHandler(async(req,res,next)=>{
-  const unpublished = await Entry.find({unpublished: true});
-  res.json({message: `Please choose a blogpost to publish`, unpublished: unpublished, options: 'Back to blogpost list'});
+  const unpublished = await Entry.find({is_published: true});
+  res.json({message: `Please choose a blogpost to publish`, list: unpublished, options: 'Back to blogpost list'});
 });
 
 const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
@@ -93,8 +84,8 @@ const entry_unpublish_put = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_comments = asyncHandler(async(req,res,next)=>{
-  const list = await Entry.find({title: titleCleaner(req.params.title)}, {comments: 1, title: 1});
-  res.json({list:list, options:'Back to Main'});
+  const list = await Entry.findOne({title: titleCleaner(req.params.title)}, {comments: 1}).populate('comments');
+  res.json(list);
 });
 
 const entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
@@ -103,7 +94,8 @@ const entry_comment_delete_get = asyncHandler(async(req,res,next)=>{
 });
 
 const entry_comment_delete_post = asyncHandler(async(req,res,next)=>{
-  await Comment.findByIdAndDelete(req.params._id);
+  await Entry.findOneAndUpdate({title: titleCleaner(req.params.title), $pull:{comments: req.params.id}})
+  await Comment.findByIdAndDelete(req.params.id);
   res.json({message: `Your comment has been removed`, options:'Back to comments'});
 });
 
@@ -112,9 +104,7 @@ export {main_get,
         entry_create_get,
         entry_create_post,
         entries,
-        entry_edit_get,
         entry_edit_put,
-        entry_delete_get,
         entry_delete_post,
         entry_publish_get,
         entry_publish_put,
