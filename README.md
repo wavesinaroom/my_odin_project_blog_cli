@@ -26,5 +26,14 @@ The blog CLI works like a conventional blog where an author posts his/her though
 3. MongoDB - Database
 4. Mongoose, process, inquirer and jwt packages for simplifying code
 
+## How to run it
 
+While I'm still finding out how to use Docker to make running the app a more enjoyable experience, please follow this steps:
+
+1. Pull the project from main
+2. Open a terminal window and navigate to `./server`
+3. Run `npm install` and `npm start` then
+4. Open another terminal window and navigate to `./client`
+5. Run `npm install` and `node ./src/index.js -a` then
+6. Provisional password is: `password1234` 
 
