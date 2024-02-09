@@ -1,12 +1,13 @@
+version: "3.3"
 services:
   backend:
-    build: ./server
+    build: 
+      context: "./server"
     container_name: server
     ports: 
     - "3000:3000"
+    command: node ./server/src/index.js
   frontend:
-    depends_on:
-    - "backend"  
+    depends_on: 
+      - backend
     build: ./client
-    container_name: client
-

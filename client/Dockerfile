@@ -1,7 +1,6 @@
 FROM node:latest
 WORKDIR /client
-COPY package.json
-ENV NODE_ENV=${NODE_ENV}
+COPY package.json package.json 
 RUN npm install
-ENTRYPOINT ["npm","start"]
+RUN npm install -g .
 COPY . .
