@@ -1,6 +1,7 @@
-version: "3.3"
+version: "2.24.5"
 services:
   backend:
+    attach: false
     build: 
       context: "./server"
     container_name: server
@@ -11,3 +12,6 @@ services:
     depends_on: 
       - backend
     build: ./client
+    stdin_open: true
+    tty: true
+  
