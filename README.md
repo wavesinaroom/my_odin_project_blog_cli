@@ -28,12 +28,10 @@ The blog CLI works like a conventional blog where an author posts his/her though
 
 ## How to run it
 
-While I'm still finding out how to use Docker to make running the app a more enjoyable experience, please follow this steps:
-
-1. Pull the project from main
-2. Open a terminal window and navigate to `./server`
-3. Run `npm install` and `npm start` then
-4. Open another terminal window and navigate to `./client`
-5. Run `npm install` and `node ./src/index.js -a` then
-6. Provisional password is: `password1234` 
+1. Pull the project from main.
+2. Navigate to `./server`.
+3. If you want to avoid running two terminal windows and your computer has Docker install, run `docker-compose up -d`. Alternatively, run `npm install`
+4. Open a new terminal window if you don't have Docker installed in your computer. Then navigate to `./client` located in the project root folder. 
+6. Run `npm install -g .`
+7. Run `blogcli -a` to start the program with the author profile or `blogcli -r` to start it with the reader profile. Provisional password for the author profile is `password1234`
 
