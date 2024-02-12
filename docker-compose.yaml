@@ -1,17 +1,7 @@
-version: "2.24.5"
+version: "3.3"
 services:
   backend:
-    attach: false
-    build: 
-      context: "./server"
-    container_name: server
+    build: ./server
     ports: 
-    - "3000:3000"
-    command: node ./server/src/index.js
-  frontend:
-    depends_on: 
-      - backend
-    build: ./client
-    stdin_open: true
-    tty: true
+      - "3000:3000"
   
